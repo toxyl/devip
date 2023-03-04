@@ -2,67 +2,53 @@ package main
 
 import "fmt"
 
+const (
+	RESET     = "\033[0m"
+	BOLD      = "\033[1m"
+	ITALIC    = "\033[3m"
+	UNDERLINE = "\033[4m"
+	RED       = 1
+	GREEN     = 2
+	YELLOW    = 3
+	BLUE      = 4
+)
+
 // as applies ANSI escape codes to format a string with bold, italic, and/or underline styles.
 func as(str string, bold, italic, underline bool) string {
 	formatStr := ""
 	if bold {
-		formatStr += "\033[1m"
+		formatStr += BOLD
 	}
 	if italic {
-		formatStr += "\033[3m"
+		formatStr += ITALIC
 	}
 	if underline {
-		formatStr += "\033[4m"
+		formatStr += UNDERLINE
 	}
-	return formatStr + str + "\033[0m"
+	return formatStr + str + RESET
 }
 
 // asColor applies ANSI escape codes to color a string and optionally apply bold, italic, and/or underline styles.
 func asColor(str string, color int, bold, italic, underline bool) string {
-	formatStr := "\033[" + fmt.Sprint(30+color) + "m"
-	if bold {
-		formatStr += "\033[1m"
-	}
-	if italic {
-		formatStr += "\033[3m"
-	}
-	if underline {
-		formatStr += "\033[4m"
-	}
-	return formatStr + str + "\033[0m"
-}
-
-// asBold applies ANSI escape codes to make a string bold and optionally apply italic and/or underline styles.
-func asBold(str string, italic bool, underline bool) string {
-	return as(str, true, italic, underline)
-}
-
-// asItalic applies ANSI escape codes to make a string italic and optionally apply bold and/or underline styles.
-func asItalic(str string, bold bool, underline bool) string {
-	return as(str, bold, true, underline)
-}
-
-// asUnderline applies ANSI escape codes to make a string underlined and optionally apply bold and/or italic styles.
-func asUnderline(str string, bold bool, italic bool) string {
-	return as(str, bold, italic, true)
+	return "\033[" + fmt.Sprint(30+color) + "m" + as(str, bold, italic, underline)
 }
 
 // asError applies ANSI escape codes to color a string red and make it bold.
 func asError(str string) string {
-	return asColor(str, 1, true, false, false)
-}
-
-// asWarning applies ANSI escape codes to color a string yellow and make it italic.
-func asWarning(str string) string {
-	return asColor(str, 3, false, true, false)
+	return asColor(str, RED, true, false, false)
 }
 
 // asOK applies ANSI escape codes to color a string green and make it bold.
 func asOK(str string) string {
-	return asColor(str, 2, true, false, false)
+	return asColor(str, GREEN, true, false, false)
 }
 
-// asNeutral applies ANSI escape codes to color a string blue.
-func asNeutral(str string) string {
-	return asColor(str, 4, false, false, false)
+// asWarning applies ANSI escape codes to color a string yellow and make it italic.
+func asWarning(str string) string {
+	return asColor(str, YELLOW, false, true, false)
+}
+
+// asIP applies ANSI escape codes to color a string blue.
+func asIP(str string) string {
+	return asColor(str, BLUE, false, false, false)
 }
