@@ -27,6 +27,8 @@ devip remove 10.10.10.1 20.20.20.1 30.30.30.1
 ```
 This will stop `localhost` serving the IPs `10.10.10.1`, `20.20.20.1` and `30.30.30.1` by removing the loopback aliases. 
 
+Need a fresh start? With `devip remove all` you can remove all loopback aliases at once. Be warned, it also removes those anyone else created on the machine and it will not ask for confirmation! It does, however, exclude localhost IPs from being removed.
+
 ## List IPs
 ```bash
 devip 
